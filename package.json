@@ -1,0 +1,20 @@
+{
+  "name": "juniorfrontendtest",
+  "version": "1.0.0",
+  "description": "We will only evaluate the client side code and the criteria will be based mainly on:",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gerardcobas/JuniorFrontendTest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gerardcobas/JuniorFrontendTest/issues"
+  },
+  "homepage": "https://github.com/gerardcobas/JuniorFrontendTest#readme"
+}
