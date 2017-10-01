@@ -1,11 +1,17 @@
 # JuniorFrontendTest
 
+## [Test page](https://githubfrontendtest.herokuapp.com/?Search=Search#)
 
-## START
 
+## Installation
+
+    $git clone https://github.com/femave/JuniorFrontendGithubTest.git
+    
+    cd .. to the route
     
     npm start
-    open: localhost:1337
+    
+   open: localhost:1337
     
 
 
