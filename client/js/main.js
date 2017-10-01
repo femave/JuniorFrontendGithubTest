@@ -1,59 +1,70 @@
+'use strict'
+
 window.onload = function() {
     document.getElementById("searcher").focus();
   };
 
-getGithub = () => {
-    
+
+const getUsername = () => {
+    return document.getElementById('searcher').value.trim()
+}
+
+
+const getGithub = () => {
+
     const inputUsername = getUsername()
-    github_petition = new XMLHttpRequest()
-    
-    github_petition.open('GET', `https://api.github.com/users/${inputUsername}/repos`, true);
-    github_petition.send()
 
-    getDataGithub(github_petition)
-    restart() 
-   
-}
+    if(inputUsername.length === 0){
+        restart()
+        alert("Careful you are not searching for nothing!")
+    }
 
-restart = () => {
-    const reposInfo = document.getElementById('reposInfo')
-    const ul = document.getElementById('reposList')
-    reposInfo.removeChild(ul);
-    
-    const userInfo = document.getElementById('userInfo');
-    const userName = document.getElementById('userName');
-    userInfo.removeChild(userName);
+    const xml = new XMLHttpRequest()
 
-    const userPic = document.getElementById('userPic')
-    userInfo.removeChild(userPic)
-
-    const repos = document.getElementById('repos')
-    const repositories = document.getElementById('repositories')
-    repos.removeChild(repositories);
-
-    document.getElementById('repos').classList.remove("border-top")
-}
-
-getUsername = () => {
-    return document.getElementById('searcher').value
-}
-
-
-getDataGithub = github_petition => {
-    github_petition.onreadystatechange = function(){
-        if(github_petition.readyState == 4 && github_petition.status == 200){
-            if (github_petition.responseText.length !== 5) var data = github_petition.responseText;
+    xml.open('GET', `https://api.github.com/users/${inputUsername}/repos`);
+    xml.onreadystatechange = function(){
+        if(xml.readyState == 4 && xml.status == 200){
+            restart()
+            if (xml.responseText.length !== 5) var data = xml.responseText;
             else var data = "User not found";
             setDataGithub(data)
-        }else{
-            const data = "User not found"
+        }
+        else{
+            var data = "User not found"
             setDataGithub(data)
         }
     }
+    xml.send()
+
+     
+   
 }
 
-setDataGithub = data => {
 
+const restart = () => {
+
+    if(document.getElementById('userPic') !== null){
+
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+        const userPic = document.getElementById('userPic')
+        const reposInfo = document.getElementById('reposInfo')
+        const ul = document.getElementById('reposList')
+        const repos = document.getElementById('repos')
+        const repositories = document.getElementById('repositories')
+        userInfo.removeChild(userPic)
+        
+        if(ul !== null){
+            reposInfo.removeChild(ul);
+            userInfo.removeChild(userName);              
+            repos.removeChild(repositories);
+            document.getElementById('repos').classList.remove("border-top")
+        }             
+    }    
+}
+
+
+const setDataGithub = data => {
 
     if(data !== "User not found"){
 
@@ -94,7 +105,7 @@ setDataGithub = data => {
             document.getElementById(`repo${i}`).innerHTML = `${repoName}`
             document.getElementById(`repoP${i}`).innerHTML = `Forks: ${repoForks} Stars: ${repoStars}`
             document.getElementById(`repo${i}`).href = repoUrl
-
+            
             document.getElementById(`repoLi${i}`).classList.add("border-bottom")
             
         }
@@ -104,7 +115,8 @@ setDataGithub = data => {
     
 }
 
-insertHTML = () => {
+
+const insertHTML = () => {
 
     const userPic = document.createElement('img')
     userPic.setAttribute('id','userPic');
@@ -115,26 +127,34 @@ insertHTML = () => {
 
     document.getElementById('userInfo').appendChild(userPic);
     document.getElementById('userInfo').appendChild(userName);
+
 }
 
-setUsername = (data) => {
-    
-    insertHTML()
+
+const setUsername = (data) => {
 
     if (data !== "User not found"){
+
+        insertHTML()
 
         document.getElementById('repos').classList.add("border-top")
         document.getElementById('userPic').src = data[0].owner.avatar_url
         document.getElementById('userName').innerHTML = data[0].owner.login
 
-    }else {
+    }else if(document.getElementById("userPic") === null) {
+            
+            const userPic = document.createElement('img')
+            userPic.setAttribute('id','userPic');
+            userPic.setAttribute('class','userPic');
 
-        const src = document.getElementById("userPic").getAttribute("src")
-        const url = 'https://i.gyazo.com/c6cac312424552cdd4f2e4ccd9b816e7.png'
+            document.getElementById('userInfo').appendChild(userPic);
 
-        if(src !== url){
-            document.getElementById('userPic').src = url
+            const src = document.getElementById("userPic").getAttribute("src")
+            const url = 'https://i.gyazo.com/c6cac312424552cdd4f2e4ccd9b816e7.png'
+
+            if(src !== url){
+                document.getElementById('userPic').src = url
+            }
         }
-    }
 
 }

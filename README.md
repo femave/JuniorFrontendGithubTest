@@ -1,5 +1,14 @@
 # JuniorFrontendTest
 
+
+## START
+
+    
+    npm start
+    open: localhost:1337
+    
+
+
 ## GOALS
 
 
